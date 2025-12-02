@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.ViewModelProvider
-import com.example.learnkotlin.ui.data.TodoViewModel
+import com.example.learnkotlin.logic.TodoViewModel
 import com.example.learnkotlin.ui.page.TodoListPage
 import com.example.learnkotlin.ui.theme.LearnKotlinTheme
 
