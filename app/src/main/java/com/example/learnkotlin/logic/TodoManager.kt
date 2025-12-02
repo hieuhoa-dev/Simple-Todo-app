@@ -1,19 +1,19 @@
-package com.example.learnkotlin.ui.data
+package com.example.learnkotlin.logic
 
-import com.example.learnkotlin.ui.page.ToDo
+import com.example.learnkotlin.data.Todo
 import java.time.Instant
 import java.util.Date
 
 object TodoManager {
-    private val TodoList = mutableListOf<ToDo>()
+    private val TodoList = mutableListOf<Todo>()
 
-    fun getAllTodo(): List<ToDo> {
+    fun getAllTodo(): List<Todo> {
         return TodoList
     }
 
     fun addTodo(title: String) {
         TodoList.add(
-            ToDo(
+            Todo(
                 System.currentTimeMillis().toInt(),
                 title,
                 Date.from(Instant.now())
