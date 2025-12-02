@@ -1,0 +1,56 @@
+# Gradle
+
+.gradle/
+build/
+**/build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# Local configuration
+
+local.properties
+*.keystore
+*.jks
+*.keystore.properties
+
+# Android Studio
+
+.idea/
+*.iml
+.DS_Store
+
+# Kotlin
+
+*.class
+*.kt~
+
+# Logs
+
+*.log
+
+# Cache
+
+.cxx/
+captures/
+.externalNativeBuild/
+
+# Generated
+
+generated/
+*/generated/
+
+# Signatures
+
+app/release/*.keystore
+app/release/*.jks
+
+# APK / AAB
+
+*.apk
+*.ap_
+*.aab
+
+# Misc
+
+*.orig
+*.rej
+*~
