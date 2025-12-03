@@ -53,4 +53,10 @@ class TodoViewModel(application: Application) : AndroidViewModel(application) {
             repository.deleteTodo(id)
         }
     }
+
+    fun reorder(from: Int, to: Int) {
+        viewModelScope.launch {
+            repository.reorderTodos(from, to)
+        }
+    }
 }
