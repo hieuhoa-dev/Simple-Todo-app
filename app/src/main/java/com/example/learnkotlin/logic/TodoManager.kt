@@ -4,6 +4,7 @@ import com.example.learnkotlin.data.Todo
 import java.time.Instant
 import java.util.Date
 
+// Old not use
 object TodoManager {
     private val TodoList = mutableListOf<Todo>()
 
