@@ -22,7 +22,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             LearnKotlinTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    TodoListPage(todoViewModel)
+                    TodoListPage(todoViewModel, innerPadding)
                 }
             }
         }

@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -37,73 +38,71 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 
 @Composable
-fun TodoListPage(viewModel: TodoViewModel) {
+fun TodoListPage(viewModel: TodoViewModel, innerPadding: PaddingValues) {
     val todos by viewModel.todoList.observeAsState()
     var inputText by remember {
         mutableStateOf("")
     }
-    Scaffold { innerPadding ->
-        Column(
+    Column(
+        modifier = Modifier
+            .fillMaxHeight()
+            .padding(8.dp)
+            .padding(innerPadding)
+            .fillMaxSize()
+    ) {
+        Box(
             modifier = Modifier
-                .fillMaxHeight()
-                .padding(8.dp)
-                .padding(innerPadding)
-                .fillMaxSize()
+                .weight(1f)
+                .fillMaxWidth()
         ) {
-            Box(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth()
-            ) {
-                if (todos.isNullOrEmpty()) {
-                    Text(
-                        text = "No Todo",
-                        modifier = Modifier.align(Alignment.Center),
-                        fontSize = 20.sp
-                    )
-                } else {
-                    LazyColumn(
-                        modifier = Modifier.fillMaxSize(),
-                        content = {
-                            itemsIndexed(todos!!) { index, todo ->
-                                TodoItem(item = todo, onDelete = {
-                                    viewModel.deleteTodo(todo.id)
-                                })
-                            }
+            if (todos.isNullOrEmpty()) {
+                Text(
+                    text = "No Todo",
+                    modifier = Modifier.align(Alignment.Center),
+                    fontSize = 20.sp
+                )
+            } else {
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    content = {
+                        itemsIndexed(todos!!) { index, todo ->
+                            TodoItem(item = todo, onDelete = {
+                                viewModel.deleteTodo(todo.id)
+                            })
                         }
-                    )
-                }
+                    }
+                )
             }
+        }
 
 
-            Row(
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            OutlinedTextField(
+                value = inputText,
+                modifier = Modifier.weight(1f),
+                onValueChange = {
+                    inputText = it
+                })
+            IconButton(
+                onClick = {
+                    viewModel.addTodo(inputText)
+                    inputText = ""
+                },
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    .clip(RoundedCornerShape(8.dp))
+                    .background(MaterialTheme.colorScheme.primary)
             ) {
-                OutlinedTextField(
-                    value = inputText,
-                    modifier = Modifier.weight(1f),
-                    onValueChange = {
-                        inputText = it
-                    })
-                IconButton(
-                    onClick = {
-                        viewModel.addTodo(inputText)
-                        inputText = ""
-                    },
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(8.dp))
-                        .background(MaterialTheme.colorScheme.primary)
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.baseline_edit_24),
-                        contentDescription = "add",
-                        tint = MaterialTheme.colorScheme.onPrimary
-                    )
-                }
+                Icon(
+                    painter = painterResource(id = R.drawable.baseline_edit_24),
+                    contentDescription = "add",
+                    tint = MaterialTheme.colorScheme.onPrimary
+                )
             }
         }
     }

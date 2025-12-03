@@ -3,6 +3,7 @@ package com.example.learnkotlin.data
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 
 @Dao
@@ -11,9 +12,12 @@ interface TodoDao {
     @Query("SELECT * FROM Todo")
     fun getAllTodo(): LiveData<List<Todo>>
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAll(todos: List<Todo>)
+
     @Insert
-    fun addTodo(todo: Todo)
+    suspend fun addTodo(todo: Todo)
 
     @Query("DELETE FROM Todo WHERE id = :Id")
-    fun deleteTodo(Id: Int)
+    suspend fun deleteTodo(Id: Int)
 }
