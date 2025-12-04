@@ -21,6 +21,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -32,6 +33,7 @@ import androidx.compose.ui.Alignment
 import kotlinx.coroutines.channels.Channel
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.hapticfeedback.HapticFeedback
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
@@ -41,6 +43,8 @@ import androidx.compose.ui.unit.sp
 import com.example.learnkotlin.R
 import com.example.learnkotlin.data.Todo
 import com.example.learnkotlin.logic.TodoViewModel
+import me.saket.swipe.SwipeAction
+import me.saket.swipe.SwipeableActionsBox
 import sh.calvin.reorderable.ReorderableCollectionItemScope
 import sh.calvin.reorderable.rememberReorderableLazyListState
 import sh.calvin.reorderable.ReorderableItem
@@ -76,6 +80,7 @@ fun TodoListPage(viewModel: TodoViewModel, innerPadding: PaddingValues) {
     var inputText by remember {
         mutableStateOf("")
     }
+
     Column(
         modifier = Modifier
             .fillMaxHeight()
@@ -172,52 +177,65 @@ fun TodoItem(
     val dateString = remember(item.createAt) {
         SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH).format(item.createAt)
     }
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.primary)
-            .padding(8.dp),
-        verticalAlignment = Alignment.CenterVertically
+
+    val deleteTodo = SwipeAction(
+        icon = painterResource(id = R.drawable.baseline_delete_24),
+        background = Color.Red,
+        onSwipe = onDelete
+    )
+
+    SwipeableActionsBox(
+        endActions = listOf(deleteTodo),
+        swipeThreshold = 40.dp,
+        backgroundUntilSwipeThreshold = MaterialTheme.colorScheme.surfaceColorAtElevation(40.dp)
     ) {
-        IconButton(
-            modifier = with(scope) {
-                Modifier
-                    .draggableHandle(
-                        onDragStarted = {
-                            hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
-                        },
-                        onDragStopped = {
-                            hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
-                        }
-                    )
-            },
-            onClick = {},
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(MaterialTheme.colorScheme.primary)
+                .padding(8.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Icon(
-                painter = painterResource(id = R.drawable.drag_handle_svgrepo_com),
-                contentDescription = "Reorder",
-                tint = MaterialTheme.colorScheme.onPrimary
-            )
-        }
-        Column(
-            modifier = Modifier.weight(1f)
-        ) {
-            Text(
-                text = dateString,
-                color = MaterialTheme.colorScheme.onSecondary
-            )
-            Text(
-                text = item.title,
-                fontSize = 20.sp,
-                color = MaterialTheme.colorScheme.onPrimary
-            )
-        }
-        IconButton(onClick = onDelete) {
-            Icon(
-                painter = painterResource(id = R.drawable.baseline_delete_24),
-                contentDescription = "Delete",
-                tint = MaterialTheme.colorScheme.onPrimary
-            )
+            IconButton(
+                modifier = with(scope) {
+                    Modifier
+                        .draggableHandle(
+                            onDragStarted = {
+                                hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
+                            },
+                            onDragStopped = {
+                                hapticFeedback.performHapticFeedback(HapticFeedbackType.LongPress)
+                            }
+                        )
+                },
+                onClick = {},
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.drag_handle_svgrepo_com),
+                    contentDescription = "Reorder",
+                    tint = MaterialTheme.colorScheme.onPrimary
+                )
+            }
+            Column(
+                modifier = Modifier.weight(1f)
+            ) {
+                Text(
+                    text = dateString,
+                    color = MaterialTheme.colorScheme.onSecondary
+                )
+                Text(
+                    text = item.title,
+                    fontSize = 20.sp,
+                    color = MaterialTheme.colorScheme.onPrimary
+                )
+            }
+            IconButton(onClick = onDelete) {
+                Icon(
+                    painter = painterResource(id = R.drawable.baseline_delete_24),
+                    contentDescription = "Delete",
+                    tint = MaterialTheme.colorScheme.onPrimary
+                )
+            }
         }
     }
 }

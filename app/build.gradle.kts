@@ -78,4 +78,6 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 
     implementation("sh.calvin.reorderable:reorderable:3.0.0")
+
+    implementation("me.saket.swipe:swipe:1.3.0")
 }
