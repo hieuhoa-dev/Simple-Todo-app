@@ -27,10 +27,13 @@ fun TodoApiModel.toLocalTodo(): Todo {
     return Todo(
         id = 0,
         title = this.todo,
-        createAt = Date()
+        createAt = Date(),
+        orderIndex = 0
     )
 }
 
 fun TodoResponse.toLocalList(): List<Todo> {
-    return todos.map { it.toLocalTodo() }
+    return todos.mapIndexed { index, todoApiModel ->
+        todoApiModel.toLocalTodo().copy(orderIndex = index)
+    }
 }
